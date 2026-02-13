@@ -10,20 +10,18 @@ body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(to top, #87cefa, #e0f6ff);
-    overflow: hidden;
+    overflow-x: hidden;
     text-align: center;
     color: #0a3d62;
 }
 
-/* ---------------- CLOUDS ---------------- */
-
+/* CLOUDS */
 .cloud {
     position: absolute;
     background: white;
     border-radius: 50px;
     opacity: 0.8;
 }
-
 .cloud:before,
 .cloud:after {
     content: "";
@@ -38,20 +36,8 @@ body {
     top: 15%;
     animation: moveCloud 40s linear infinite;
 }
-
-.cloud1:before {
-    width: 70px;
-    height: 70px;
-    top: -30px;
-    left: 10px;
-}
-
-.cloud1:after {
-    width: 90px;
-    height: 90px;
-    top: -40px;
-    right: 10px;
-}
+.cloud1:before { width:70px; height:70px; top:-30px; left:10px; }
+.cloud1:after { width:90px; height:90px; top:-40px; right:10px; }
 
 .cloud2 {
     width: 150px;
@@ -59,76 +45,50 @@ body {
     top: 50%;
     animation: moveCloud 60s linear infinite;
 }
-
-.cloud2:before {
-    width: 80px;
-    height: 80px;
-    top: -40px;
-    left: 20px;
-}
-
-.cloud2:after {
-    width: 100px;
-    height: 100px;
-    top: -50px;
-    right: 15px;
-}
+.cloud2:before { width:80px; height:80px; top:-40px; left:20px; }
+.cloud2:after { width:100px; height:100px; top:-50px; right:15px; }
 
 @keyframes moveCloud {
     from { left: -200px; }
     to { left: 110%; }
 }
 
-/* ---------------- TEXT ---------------- */
-
+/* TEXT */
 h1 {
     margin-top: 40px;
-    font-size: 3em;
+    font-size: clamp(1.8rem, 6vw, 3rem);
 }
 
 button {
     padding: 12px 25px;
     border: none;
     border-radius: 25px;
-    font-size: 18px;
+    font-size: clamp(14px, 4vw, 18px);
     cursor: pointer;
     margin: 10px;
     transition: 0.3s;
 }
 
-#yesBtn {
-    background: #1e90ff;
-    color: white;
-}
-
-#noBtn {
-    background: white;
-    color: #1e90ff;
-    position: absolute;
-}
+#yesBtn { background:#1e90ff; color:white; }
+#noBtn { background:white; color:#1e90ff; }
 
 #message {
-    font-size: 1.3em;
+    font-size: clamp(1rem, 4vw, 1.3rem);
     margin-top: 20px;
     min-height: 50px;
 }
 
-/* ---------------- FLOATING PHOTOS ---------------- */
-
+/* FLOATING PHOTOS */
 .photo {
     position: absolute;
-    width: 170px;
+    width: clamp(100px, 28vw, 170px);
     background: white;
     padding: 8px;
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     animation: floatPhoto 6s ease-in-out infinite;
 }
-
-.photo img {
-    width: 100%;
-    border-radius: 10px;
-}
+.photo img { width:100%; border-radius:10px; }
 
 @keyframes floatPhoto {
     0% { transform: translateY(0px) rotate(-2deg); }
@@ -136,24 +96,24 @@ button {
     100% { transform: translateY(0px) rotate(-2deg); }
 }
 
-/* ---------------- GAME ---------------- */
-
+/* GAME */
 .heartGame {
     position: absolute;
     font-size: 26px;
     cursor: pointer;
 }
 
-#gameArea, #question {
-    display: none;
-}
+#gameArea, #question { display:none; }
 
+/* MOBILE CLEANER */
+@media (max-width:768px){
+    .photo { width:110px; }
+}
 </style>
 </head>
 
 <body>
 
-<!-- CLOUDS -->
 <div class="cloud cloud1"></div>
 <div class="cloud cloud2"></div>
 
@@ -162,19 +122,15 @@ button {
 <div id="message"></div>
 <button onclick="startStory()">เริ่มเรื่องของเรา ☁️</button>
 
-<!-- Floating Photos -->
 <div class="photo" style="top:25%; left:10%; animation-delay:0s;">
     <img src="fan1.jpg">
 </div>
-
 <div class="photo" style="top:65%; left:70%; animation-delay:1s;">
     <img src="fan2.jpg">
 </div>
-
 <div class="photo" style="top:35%; left:65%; animation-delay:2s;">
     <img src="fan3.jpg">
 </div>
-
 <div class="photo" style="top:70%; left:20%; animation-delay:3s;">
     <img src="fan4.jpg">
 </div>
@@ -193,16 +149,11 @@ button {
 <div id="prankImage" style="
   display:none;
   position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  inset:0;
   background:url('prank.jpg') center/cover no-repeat;
-  z-index:9999;
-">
+  z-index:9999;">
 </div>
 
-<!-- MUSIC -->
 <audio id="bgMusic" loop>
     <source src="fan.mp3" type="audio/mp3">
 </audio>
@@ -211,116 +162,114 @@ button {
 const text = "รักเบบี๋ที่สุด ถึงแม้เราจะทะเลาะกันบ่อยก็ตามช่วงนี้ 💙";
 let i = 0;
 
-function startStory() {
+function startStory(){
     fadeInMusic();
     typeWriter();
 }
 
-function typeWriter() {
-    if (i < text.length) {
+function typeWriter(){
+    if(i < text.length){
         document.getElementById("message").innerHTML += text.charAt(i);
         i++;
-        setTimeout(typeWriter, 50);
+        setTimeout(typeWriter,50);
     } else {
         startGame();
     }
 }
 
-/* MUSIC FADE IN */
-function fadeInMusic() {
+function fadeInMusic(){
     const music = document.getElementById("bgMusic");
     music.volume = 0;
-    music.play();
+    music.play().catch(()=>{});
     let vol = 0;
-    const fade = setInterval(() => {
-        if (vol < 1) {
+    const fade = setInterval(()=>{
+        if(vol < 1){
             vol += 0.05;
             music.volume = vol;
-        } else {
-            clearInterval(fade);
-        }
-    }, 200);
+        } else clearInterval(fade);
+    },200);
 }
 
-/* MINI GAME */
-let score = 0;
-let timeLeft = 20;
+/* GAME */
+let score=0;
+let timeLeft=20;
 let gameInterval;
 let timerInterval;
 
-function startGame() {
-    document.getElementById("gameArea").style.display = "block";
+function startGame(){
+    document.getElementById("gameArea").style.display="block";
 
-    timerInterval = setInterval(() => {
+    timerInterval=setInterval(()=>{
         timeLeft--;
-        document.getElementById("time").innerText = timeLeft;
-        if (timeLeft <= 0) endGame();
-    }, 1000);
+        document.getElementById("time").innerText=timeLeft;
+        if(timeLeft<=0) endGame();
+    },1000);
 
-    gameInterval = setInterval(spawnHeart, 500);
+    gameInterval=setInterval(spawnHeart,500);
 }
 
-function spawnHeart() {
-    const heart = document.createElement("div");
-    heart.innerHTML = "💙";
+function spawnHeart(){
+    const heart=document.createElement("div");
+    heart.innerHTML="💙";
     heart.classList.add("heartGame");
-    heart.style.left = Math.random() * window.innerWidth + "px";
-    heart.style.top = Math.random() * window.innerHeight + "px";
 
-    heart.onclick = () => {
+    const maxX=window.innerWidth-40;
+    const maxY=window.innerHeight-40;
+
+    heart.style.left=Math.random()*maxX+"px";
+    heart.style.top=Math.random()*maxY+"px";
+
+    heart.onclick=()=>{
         score++;
-        document.getElementById("score").innerText = score;
+        document.getElementById("score").innerText=score;
         heart.remove();
-        if (score >= 10) winGame();
+        if(score>=10) winGame();
     };
 
     document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 1500);
+    setTimeout(()=>heart.remove(),1500);
 }
 
-function winGame() {
+function winGame(){
     clearInterval(gameInterval);
     clearInterval(timerInterval);
-    document.getElementById("gameArea").style.display = "none";
-    document.getElementById("question").style.display = "block";
+    document.getElementById("gameArea").style.display="none";
+    document.getElementById("question").style.display="block";
 }
 
-function endGame() {
-    alert("ยังจับหัวใจไม่ครบเลยนะ ☁️ ลองใหม่ ไออ่อน");
+function endGame(){
+    alert("ยังจับหัวใจไม่ครบเลยนะ ☁️ ลองใหม่");
     location.reload();
 }
 
-/* NO BUTTON RUN */
-const noBtn = document.getElementById("noBtn");
-noBtn.addEventListener("mouseover", () => {
-    noBtn.style.top = Math.random() * window.innerHeight + "px";
-    noBtn.style.left = Math.random() * window.innerWidth + "px";
-});
+/* NO BUTTON MOBILE SAFE */
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",moveNoButton);
+noBtn.addEventListener("touchstart",moveNoButton);
 
-function winLove() {
+function moveNoButton(){
+    const maxX=window.innerWidth-noBtn.offsetWidth;
+    const maxY=window.innerHeight-noBtn.offsetHeight;
 
-    alert("ไม่ว่าอะไรจะเกิดเค้าก็อยากอยู่กะเบ้บนะ 💙");
-
-    setTimeout(() => {
-
-        const prank = document.getElementById("prankImage");
-
-        // แสดงรูปเต็มจอ
-        prank.style.display = "block";
-
-        // แสดง 3 วิแล้วกลับ
-        setTimeout(() => {
-            prank.style.display = "none";
-
-            // กลับไปหน้า question
-            document.getElementById("question").style.display = "block";
-
-        }, 2000);
-
-    }, 5000);
+    noBtn.style.position="absolute";
+    noBtn.style.left=Math.random()*maxX+"px";
+    noBtn.style.top=Math.random()*maxY+"px";
 }
 
+function winLove(){
+    alert("ไม่ว่าอะไรจะเกิดเค้าก็อยากอยู่กะเบ้บนะ 💙");
 
+    setTimeout(()=>{
+        const prank=document.getElementById("prankImage");
+        prank.style.display="block";
+
+        setTimeout(()=>{
+            prank.style.display="none";
+            document.getElementById("question").style.display="block";
+        },2000);
+
+    },5000);
+}
 </script>
 
 </body>
