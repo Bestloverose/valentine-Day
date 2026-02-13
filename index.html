@@ -190,6 +190,18 @@ button {
     <button id="noBtn">No 😝</button>
 </div>
 
+<div id="prankImage" style="
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:url('prank.jpg') center/cover no-repeat;
+  z-index:9999;
+">
+</div>
+
 <!-- MUSIC -->
 <audio id="bgMusic" loop>
     <source src="fan.mp3" type="audio/mp3">
@@ -286,8 +298,29 @@ noBtn.addEventListener("mouseover", () => {
 });
 
 function winLove() {
+
     alert("ไม่ว่าอะไรจะเกิดเค้าก็อยากอยู่กะเบ้บนะ 💙");
+
+    setTimeout(() => {
+
+        const prank = document.getElementById("prankImage");
+
+        // แสดงรูปเต็มจอ
+        prank.style.display = "block";
+
+        // แสดง 3 วิแล้วกลับ
+        setTimeout(() => {
+            prank.style.display = "none";
+
+            // กลับไปหน้า question
+            document.getElementById("question").style.display = "block";
+
+        }, 2000);
+
+    }, 5000);
 }
+
+
 </script>
 
 </body>
